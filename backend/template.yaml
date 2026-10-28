@@ -1,0 +1,85 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: CarePlus Hospital Patient Management API
+
+Parameters:
+  TableName:
+    Type: String
+    Default: HospitalPatients
+    Description: DynamoDB table name for patient records.
+
+Globals:
+  Function:
+    Timeout: 30
+    Runtime: python3.12
+    Environment:
+      Variables:
+        DYNAMODB_TABLE: !Ref TableName
+        AWS_REGION: ap-south-1
+
+Resources:
+  HospitalPatientsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Ref TableName
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: patientId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: patientId
+          KeyType: HASH
+
+  PatientApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: careplus-patient-api
+      CodeUri: .
+      Handler: hospital_patients.lambda_handler
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TableName
+      Events:
+        GetPatients:
+          Type: HttpApi
+          Properties:
+            Path: /patients
+            Method: GET
+        GetPatient:
+          Type: HttpApi
+          Properties:
+            Path: /patients/{patientId}
+            Method: GET
+        CreatePatient:
+          Type: HttpApi
+          Properties:
+            Path: /patients
+            Method: POST
+        UpdatePatient:
+          Type: HttpApi
+          Properties:
+            Path: /patients/{patientId}
+            Method: PUT
+        DeletePatient:
+          Type: HttpApi
+          Properties:
+            Path: /patients/{patientId}
+            Method: DELETE
+        OptionsPatients:
+          Type: HttpApi
+          Properties:
+            Path: /patients
+            Method: OPTIONS
+        OptionsPatient:
+          Type: HttpApi
+          Properties:
+            Path: /patients/{patientId}
+            Method: OPTIONS
+
+Outputs:
+  ApiEndpoint:
+    Description: API Gateway HTTP API endpoint.
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com"
+  TableName:
+    Description: DynamoDB table name.
+    Value: !Ref TableName

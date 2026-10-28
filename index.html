@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CarePlus | Patient Management</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">✚</div>
+            <div>
+                <h2>CarePlus</h2>
+                <span>Hospital Management</span>
+            </div>
+        </div>
+
+        <div class="nav-heading">MAIN MENU</div>
+
+        <nav>
+            <a href="#dashboard" class="nav-link active">
+                <span>▦</span> Dashboard
+            </a>
+
+            <a href="#patients-section" class="nav-link">
+                <span>♙</span> Patients
+            </a>
+
+            <a href="#patient-form-section" class="nav-link">
+                <span>＋</span> Add Patient
+            </a>
+
+            <a href="#appointments-section" class="nav-link">
+                <span>▣</span> Appointments
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="status-indicator"></div>
+            <div>
+                <strong>Local Database</strong>
+                <p id="connection-status">Checking connection...</p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main-content">
+
+        <!-- Header -->
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">HOSPITAL ADMINISTRATION</p>
+                <h1 id="dashboard">Patient Management</h1>
+                <p class="subtitle">
+                    Manage patient information and appointments in one place.
+                </p>
+            </div>
+
+            <div class="admin-badge">
+                <div class="avatar">A</div>
+                <div>
+                    <strong>Staff Demo</strong>
+                    <span>Demonstration Mode</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Notifications -->
+        <div id="notification" class="notification" role="status"
+             aria-live="polite" hidden></div>
+
+        <!-- Dashboard cards -->
+        <section class="stats-grid">
+
+            <article class="stat-card">
+                <div class="stat-icon blue">♙</div>
+                <div>
+                    <p>Total Patients</p>
+                    <h2 id="total-patients">0</h2>
+                    <span>Registered records</span>
+                </div>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-icon green">▣</div>
+                <div>
+                    <p>Appointments</p>
+                    <h2 id="total-appointments">0</h2>
+                    <span>Scheduled appointments</span>
+                </div>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-icon purple">♡</div>
+                <div>
+                    <p>Departments</p>
+                    <h2 id="total-departments">0</h2>
+                    <span>Departments represented</span>
+                </div>
+            </article>
+
+        </section>
+
+        <!-- Add/Edit patient form -->
+        <section class="panel" id="patient-form-section">
+
+            <div class="panel-header">
+                <div>
+                    <p class="eyebrow">PATIENT INFORMATION</p>
+                    <h2 id="form-title">Register New Patient</h2>
+                    <p class="panel-description">
+                        Enter patient details and appointment information.
+                    </p>
+                </div>
+
+                <span class="form-badge">Patient Form</span>
+            </div>
+
+            <form id="patient-form">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="patientName">Patient Name *</label>
+                        <input
+                            type="text"
+                            id="patientName"
+                            name="patientName"
+                            placeholder="Enter full name"
+                            maxlength="100"
+                            autocomplete="name"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age">Age *</label>
+                        <input
+                            type="number"
+                            id="age"
+                            name="age"
+                            placeholder="Enter age"
+                            min="1"
+                            max="124"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">Gender *</label>
+                        <select id="gender" name="gender" required>
+                            <option value="">Select gender</option>
+                            <option value="Female">Female</option>
+                            <option value="Male">Male</option>
+                            <option value="Other">Other</option>
+                            <option value="Prefer not to say">
+                                Prefer not to say
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            placeholder="Enter phone number"
+                            maxlength="15"
+                            pattern="[0-9+() -]{7,15}"
+                            autocomplete="tel"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="department">Department *</label>
+                        <select id="department" name="department" required>
+                            <option value="">Select department</option>
+                            <option value="Cardiology">Cardiology</option>
+                            <option value="Neurology">Neurology</option>
+                            <option value="Orthopedics">Orthopedics</option>
+                            <option value="Pediatrics">Pediatrics</option>
+                            <option value="Dermatology">Dermatology</option>
+                            <option value="General Medicine">
+                                General Medicine
+                            </option>
+                            <option value="Gynecology">Gynecology</option>
+                            <option value="ENT">ENT</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="appointmentDate">Appointment Date</label>
+                        <input
+                            type="date"
+                            id="appointmentDate"
+                            name="appointmentDate">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="appointmentTime">Appointment Time</label>
+                        <input
+                            type="time"
+                            id="appointmentTime"
+                            name="appointmentTime">
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+
+                    <button type="button" id="cancel-edit"
+                            class="btn btn-secondary" hidden>
+                        Cancel Edit
+                    </button>
+
+                    <button type="reset" id="reset-form"
+                            class="btn btn-secondary">
+                        Clear Form
+                    </button>
+
+                    <button type="submit" id="submit-button"
+                            class="btn btn-primary">
+                        + Register Patient
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+        <!-- Patient records -->
+        <section class="panel" id="patients-section">
+
+            <div class="panel-header">
+                <div>
+                    <p class="eyebrow">PATIENT DIRECTORY</p>
+                    <h2>Patient Records</h2>
+                    <p class="panel-description">
+                        View, edit, and delete registered patients.
+                    </p>
+                </div>
+
+                <button id="refresh-button" class="btn btn-secondary">
+                    ↻ Refresh
+                </button>
+            </div>
+
+            <div class="table-toolbar">
+
+                <div class="search-box">
+                    <span>⌕</span>
+                    <input
+                        type="search"
+                        id="search-input"
+                        placeholder="Search by name, ID or department...">
+                </div>
+
+                <span id="record-count" class="record-count">
+                    0 records
+                </span>
+
+            </div>
+
+            <div class="table-container">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Patient</th>
+                            <th>Patient ID</th>
+                            <th>Department</th>
+                            <th>Appointment</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="patient-table-body">
+                        <tr>
+                            <td colspan="5" class="empty-state">
+                                Loading patient records...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="table-footer">
+                <span>Patient records are stored in a local SQLite database.</span>
+                <span id="last-updated"></span>
+            </div>
+
+        </section>
+
+        <!-- Appointment list -->
+        <section class="panel" id="appointments-section">
+
+            <div class="panel-header">
+                <div>
+                    <p class="eyebrow">SCHEDULE MANAGEMENT</p>
+                    <h2>Scheduled Appointments</h2>
+                    <p class="panel-description">
+                        Appointments recorded against patient records.
+                    </p>
+                </div>
+            </div>
+
+            <div id="appointment-list" class="appointment-list">
+                <p class="empty-state">Loading appointments...</p>
+            </div>
+
+        </section>
+
+        <footer class="footer">
+            <p>CarePlus Hospital Management System</p>
+            <span>SQLite-powered local demonstration</span>
+        </footer>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
